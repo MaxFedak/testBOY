@@ -9,7 +9,7 @@ from aiogram.filters import Command
 from aiogram.types.input_file import FSInputFile
 
 TOKEN = "7552419100:AAEih_b7hX4hHoNv_f1iAP-IAoIIOKJTmGE"
-WEBHOOK_URL = f"https://bot-video-a18f1b52dae7.herokuapp.com/webhook"
+WEBHOOK_URL = f"https://bot-video-a18f1b52dae7.herokuapp.com:443/webhook"
 PORT = 443
 
 logging.basicConfig(level=logging.INFO)

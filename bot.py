@@ -1,7 +1,7 @@
 import logging
-import os
 import asyncio
 import uuid
+import os
 import yt_dlp
 from aiohttp import web
 from aiogram import Bot, Dispatcher, types
@@ -9,9 +9,8 @@ from aiogram.filters import Command
 from aiogram.types.input_file import FSInputFile
 
 TOKEN = "7552419100:AAEih_b7hX4hHoNv_f1iAP-IAoIIOKJTmGE"
-WEBHOOK_HOST = os.environ.get("WEBHOOK_HOST", "https://bot-video-a18f1b52dae7.herokuapp.com")
-WEBHOOK_PATH = "/webhook"
-WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
+WEBHOOK_URL = f"https://bot-video-a18f1b52dae7.herokuapp.com/webhook"
+PORT = 443
 
 logging.basicConfig(level=logging.INFO)
 
@@ -38,14 +37,11 @@ async def download_video(message: types.Message):
             'outtmpl': unique_filename,
             'quiet': True
         }
-
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
-
         video_file = FSInputFile(unique_filename)
         await message.reply_video(video_file)
         os.remove(unique_filename)
-
     except Exception as e:
         await message.reply(f"❌ Error: {e}")
 
@@ -68,11 +64,10 @@ async def main():
     app.on_startup.append(on_startup)
     app.on_shutdown.append(on_shutdown)
 
-    port = int(os.environ.get("PORT", 443))
     runner = web.AppRunner(app)
     await runner.setup()
-    site = web.TCPSite(runner, "0.0.0.0", port)
-    logging.info(f"Starting server on port {port}...")
+    site = web.TCPSite(runner, "0.0.0.0", PORT)
+    logging.info(f"Starting server on port {PORT}...")
     await site.start()
 
     while True:
